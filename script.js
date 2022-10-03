@@ -18,6 +18,7 @@ const drawTreeMap = (moviesData) => {
     });
 
   //create an array to show all the movies (children) only
+  //format : [data: {category: "Action", name: "Avatar", value: "760505847"}]
   const moviesTiles = hierarchy.leaves();
 
   //using d3 treemap to create a method
@@ -27,7 +28,15 @@ const drawTreeMap = (moviesData) => {
   createTreeMap(hierarchy);
 
   //since we can't put text directly in the svg element, we create the group elements instead
-  const block = svg.selectAll("g").data(moviesTiles).enter().append("g");
+  const block = svg
+    .selectAll("g")
+    .data(moviesTiles)
+    .enter()
+    .append("g")
+    //mark the block starting point (x, y) with the position we have been generated before by using transform
+    .attr("transform", (movie) => {
+      return "translate (" + movie.x0 + ", " + movie.y0 + ")";
+    });
 
   //append each block to a rectangle
   block
@@ -37,27 +46,42 @@ const drawTreeMap = (moviesData) => {
     .attr("fill", (movie) => {
       let category = movie.data.category;
       if (category === "Action") {
-        return "indianred";
+        return "lightsalmon";
       } else if (category === "Drama") {
-        return "lightsteelblue";
+        return "cornflowerblue";
       } else if (category === "Adventure") {
-        return "mediumslateblue";
+        return "lightskyblue";
       } else if (category === "Family") {
-        return "olivedrab";
+        return "lavender";
       } else if (category === "Animation") {
-        return "palevioletred";
+        return "lightcoral";
       } else if (category === "Comedy") {
-        return "royalblue";
+        return "cornsilk";
       } else if (category === "Biography") {
-        return "sandybrown";
+        return "lightblue";
       }
+    })
+    .attr("data-name", (movie) => {
+      return movie.data.name;
+    })
+    .attr("data-category", (movie) => {
+      return movie.data.category;
+    })
+    .attr("data-value", (movie) => {
+      return movie.data.value;
+    })
+    //use 2 positions to calculate the width and height of the rentangle
+    .attr("width", (movie) => {
+      return movie.x1 - movie.x0;
+    })
+    .attr("height", (movie) => {
+      return movie.y1 - movie.y0;
     });
 };
 
 async function fetchMovieSales() {
   const response = await fetch(movieSalesURL);
   const data = await response.json();
-  console.log(data);
   drawTreeMap(data);
 }
 
