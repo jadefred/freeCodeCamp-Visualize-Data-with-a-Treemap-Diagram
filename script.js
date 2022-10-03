@@ -77,6 +77,15 @@ const drawTreeMap = (moviesData) => {
     .attr("height", (movie) => {
       return movie.y1 - movie.y0;
     });
+
+  //append text (movie's name) to the block
+  block
+    .append("text")
+    .text((movie) => {
+      return movie.data.name;
+    })
+    .attr("x", 5)
+    .attr("y", 30);
 };
 
 async function fetchMovieSales() {
