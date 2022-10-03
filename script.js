@@ -1,6 +1,7 @@
 const movieSalesURL = "https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json";
 
 const svg = d3.select("#canvas");
+const tooltip = d3.select("#tooltip");
 
 const drawTreeMap = (moviesData) => {
   //develope the hierarchy of data with d3 method (process data as a tree)
@@ -76,6 +77,27 @@ const drawTreeMap = (moviesData) => {
     })
     .attr("height", (movie) => {
       return movie.y1 - movie.y0;
+    })
+    //add tooltip
+    .on("mouseover", (movie) => {
+      tooltip.transition().style("visibility", "visible");
+
+      //currency formatter
+      const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+
+      const revenue = formatter.format(movie.data.value);
+
+      tooltip.html(
+        "Movie: " + movie.data.name + "<br />" + "Category: " + movie.data.category + "<br />" + "Box office: " + revenue
+      );
+
+      tooltip.attr("data-value", movie["data"]["value"]);
+    })
+    .on("mouseout", () => {
+      tooltip.transition().style("visibility", "hidden");
     });
 
   //append text (movie's name) to the block
