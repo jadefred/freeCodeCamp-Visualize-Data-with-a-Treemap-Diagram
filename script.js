@@ -47,19 +47,19 @@ const drawTreeMap = (moviesData) => {
     .attr("fill", (movie) => {
       let category = movie.data.category;
       if (category === "Action") {
-        return "lightsalmon";
+        return "#f94144";
       } else if (category === "Drama") {
-        return "cornflowerblue";
+        return "#f3722c";
       } else if (category === "Adventure") {
-        return "lightskyblue";
+        return "#f8961e";
       } else if (category === "Family") {
-        return "lavender";
+        return "#f9c74f";
       } else if (category === "Animation") {
-        return "lightcoral";
+        return "#90be6d";
       } else if (category === "Comedy") {
-        return "cornsilk";
+        return "#43aa8b";
       } else if (category === "Biography") {
-        return "lightblue";
+        return "#577590";
       }
     })
     .attr("data-name", (movie) => {
@@ -94,7 +94,7 @@ const drawTreeMap = (moviesData) => {
         "Movie: " + movie.data.name + "<br />" + "Category: " + movie.data.category + "<br />" + "Box office: " + revenue
       );
 
-      tooltip.attr("data-value", movie["data"]["value"]);
+      tooltip.attr("data-value", movie.data.value);
     })
     .on("mouseout", () => {
       tooltip.transition().style("visibility", "hidden");
@@ -107,7 +107,7 @@ const drawTreeMap = (moviesData) => {
       return movie.data.name;
     })
     .attr("x", 5)
-    .attr("y", 30);
+    .attr("y", 20)
 };
 
 async function fetchMovieSales() {

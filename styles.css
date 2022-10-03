@@ -3,18 +3,29 @@ main {
 }
 
 #canvas {
-  background-color: whitesmoke;
-}
-
-#canvas {
   min-width: 1000px;
   min-height: 600px;
+  font-size: 12px;
 }
 
 #legend {
   min-height: 300px;
+  width: 130px;
 }
 
 #tooltip {
   visibility: hidden;
+  margin: 2rem 0;
+}
+
+#canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2rem;
+}
+
+.tile:hover {
+  fill: whitesmoke;
+  cursor: pointer;
 }
