@@ -3,7 +3,7 @@ const movieSalesURL = "https://cdn.freecodecamp.org/testable-projects-fcc/data/t
 const svg = d3.select("#canvas");
 
 const drawTreeMap = (moviesData) => {
-  //develope the hierarchy of data with d3 method
+  //develope the hierarchy of data with d3 method (process data as a tree)
   const hierarchy = d3
     .hierarchy(moviesData, (node) => {
       return node.children;
@@ -17,11 +17,41 @@ const drawTreeMap = (moviesData) => {
       return node2.value - node1.value;
     });
 
+  //create an array to show all the movies (children) only
+  const moviesTiles = hierarchy.leaves();
+
   //using d3 treemap to create a method
   const createTreeMap = d3.treemap().size([1000, 600]);
 
-  //it will generate a 4 corners positon of the sqaure that will halp to draw the square on tree map (x0, x1, y0, y1)
+  //it will generate properties which contain 4 corners positon of the block that will help to draw the square on tree map later on (x0, x1, y0, y1)
   createTreeMap(hierarchy);
+
+  //since we can't put text directly in the svg element, we create the group elements instead
+  const block = svg.selectAll("g").data(moviesTiles).enter().append("g");
+
+  //append each block to a rectangle
+  block
+    .append("rect")
+    .attr("class", "tile")
+    //fill the color according to different category
+    .attr("fill", (movie) => {
+      let category = movie.data.category;
+      if (category === "Action") {
+        return "indianred";
+      } else if (category === "Drama") {
+        return "lightsteelblue";
+      } else if (category === "Adventure") {
+        return "mediumslateblue";
+      } else if (category === "Family") {
+        return "olivedrab";
+      } else if (category === "Animation") {
+        return "palevioletred";
+      } else if (category === "Comedy") {
+        return "royalblue";
+      } else if (category === "Biography") {
+        return "sandybrown";
+      }
+    });
 };
 
 async function fetchMovieSales() {
